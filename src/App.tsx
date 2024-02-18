@@ -11,8 +11,9 @@ import { BottomCars } from "./Cars/BottomCars";
 import { RightCars } from "./Cars/RightCars";
 import { TopCars } from "./Cars/TopCars";
 
-import bg from "./intersection.jpg";
 import { getRandomInt } from "./getMinMax";
+
+import bg from "./intersection.jpg";
 
 function App() {
   const [trafficLights, setTrafficLights] = useState<TrafficLightsState>({
@@ -24,38 +25,66 @@ function App() {
       ? Movements.vertical
       : Movements.horizontal;
 
-  const [leftCarsCount, setLeftCarsCount] = useState<number>(
-    getRandomInt(1, 20)
-  );
-  const [rightCarsCount, setRightCarsCount] = useState<number>(
-    getRandomInt(1, 20)
-  );
-  const [topCarsCount, setTopCarsCount] = useState<number>(getRandomInt(1, 20));
-  const [bottomCarsCount, setBottomCarsCount] = useState<number>(
-    getRandomInt(1, 20)
-  );
+  const [leftCarsCount, setLeftCarsCount] = useState<number>(0);
+  const [rightCarsCount, setRightCarsCount] = useState<number>(0);
+  const [topCarsCount, setTopCarsCount] = useState<number>(0);
+  const [bottomCarsCount, setBottomCarsCount] = useState<number>(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTrafficLights((prev) => ({
-        horizontal: prev.vertical,
-        vertical: prev.horizontal,
-      }));
-    }, 5000);
+    const totalSecs = [
+      {
+        duration: 5000,
+        green: Movements.horizontal,
+        left: 3,
+        right: 4,
+        top: 6,
+        bottom: 7,
+      },
+      {
+        duration: 10000,
+        green: Movements.vertical,
+        left: 20,
+        right: 20,
+        top: 6,
+        bottom: 6,
+      },
+      {
+        duration: 5000,
+        green: Movements.horizontal,
+        left: 3,
+        right: 4,
+        top: 6,
+        bottom: 7,
+      },
+    ].reduce((counter, item) => {
+      const afterSec = counter + item.duration;
+      setTimeout(() => {
+        setTrafficLights({
+          horizontal:
+            item.green == Movements.horizontal
+              ? TrafficLightCol.green
+              : TrafficLightCol.red,
+          vertical:
+            item.green == Movements.vertical
+              ? TrafficLightCol.green
+              : TrafficLightCol.red,
+        });
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+        setLeftCarsCount(item.left);
+        setRightCarsCount(item.right);
+        setTopCarsCount(item.top);
+        setBottomCarsCount(item.bottom);
+      }, counter);
 
-  useEffect(() => {
-    setInterval(() => {
-      setLeftCarsCount(getRandomInt(1, 5));
-      setRightCarsCount(getRandomInt(1, 5));
+      return afterSec;
+    }, 0);
 
-      setTopCarsCount(getRandomInt(1, 5));
-      setBottomCarsCount(getRandomInt(1, 5));
-    }, 4000);
+    setTimeout(() => {
+      setTrafficLights({
+        horizontal: TrafficLightCol.red,
+        vertical: TrafficLightCol.green,
+      });
+    }, totalSecs);
   }, []);
 
   return (

@@ -35,7 +35,7 @@ export const BottomCars: FC<ILeftCarsProps> = ({ moving, count }) => {
           id: uuidv4(),
           bottom:
             0 -
-            Math.floor(index / LINES_COUNT) * CAR_HEIGHT -
+            Math.floor(index / LINES_COUNT) * CAR_WIDTH -
             Math.floor(index / LINES_COUNT) * CAR_MARGIN,
           left: LEFT + (index % LINES_COUNT) * CAR_WIDTH,
         })),

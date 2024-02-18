@@ -1,12 +1,11 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { CAR_HEIGHT, CAR_MARGIN, CAR_WIDTH } from "../constants/CAR";
+import { CAR_MARGIN, CAR_WIDTH } from "../constants/CAR";
 import { LINES_COUNT, WRAPPER_WIDTH } from "../constants/TEMPLATE";
 
-import { Car } from "./Car";
-import { HorizontalCar } from "./HorizontalCar";
 import { CarMovementLength, Interval } from "../constants/IntervalCount";
+import { HorizontalCar } from "./HorizontalCar";
 
 interface ICarPositions {
   id: number;
@@ -36,7 +35,7 @@ export const TopCars: FC<ILeftCarsProps> = ({ moving, count }) => {
           id: uuidv4(),
           top:
             0 -
-            Math.floor(index / LINES_COUNT) * CAR_HEIGHT -
+            Math.floor(index / LINES_COUNT) * CAR_WIDTH -
             Math.floor(index / LINES_COUNT) * CAR_MARGIN,
           left: LEFT + (index % LINES_COUNT) * CAR_WIDTH,
         })),
